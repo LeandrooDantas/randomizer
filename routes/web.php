@@ -1,15 +1,21 @@
 <?php
 
-use App\Livewire\Login;
-use App\Livewire\Index;
 use App\Livewire\Create;
+use App\Livewire\Index;
+use App\Livewire\Login;
 use App\Livewire\Update;
 use Illuminate\Support\Facades\Route;
 
-Route::get('login', Login::class)->name('login');
 
-Route::get('index', Index::class)->name('index');
+Route::prefix('prize-draw')
+    ->name('prize-draw.')
+    ->group(function () {
 
-Route::get('create', Create::class)->name('create');
+        Route::get('login', Login::class)->name('login');
 
-Route::get('update/{id}', Update::class)->name('update');
+        Route::middleware('auth')->group(function () {
+            Route::get('index', Index::class)->name('index');
+            Route::get('create', Create::class)->name('create');
+            Route::get('update/{id}', Update::class)->name('update');
+        });
+    });

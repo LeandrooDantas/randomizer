@@ -2,15 +2,34 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth as LoginRandomizer;
 use Illuminate\View\View;
-use Livewire\Attributes\Title;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class Login extends Component
 {
+    #[Validate('required|email|min:3')]
+    public string $email;
+    #[Validate('required|min:3')]
+    public string $password;
     #[Title('Login')]
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
+    public function login(): void
+    {
+        $this->validate();
+        $credentials = [
+            'email' => $this->email,
+            'password' => $this->password
+        ];
+        if (LoginRandomizer::attempt($credentials)) :
+            $this->redirectRoute('prize-draw.index');
+        endif;
+        $this->addError('incorrect_password', 'Usuário ou senha inválida. Tente novamente.');
+    }
+
     public function render(): View
     {
         return view('livewire.login');
