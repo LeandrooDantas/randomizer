@@ -10,7 +10,7 @@ use Livewire\Component;
 class Create extends Component
 {
     #[Title('Criar Sorteio')]
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render(): View
     {
         return view('livewire.create');

@@ -6,12 +6,11 @@ use App\Livewire\Login;
 use App\Livewire\Update;
 use Illuminate\Support\Facades\Route;
 
+Route::get('prize-draw/login', Login::class)->name('login');
 
 Route::prefix('prize-draw')
     ->name('prize-draw.')
     ->group(function () {
-
-        Route::get('login', Login::class)->name('login');
 
         Route::middleware('auth')->group(function () {
             Route::get('index', Index::class)->name('index');

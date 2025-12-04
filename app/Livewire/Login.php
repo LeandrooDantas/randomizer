@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Auth as LoginRandomizer;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Login extends Component
 {
-    #[Validate('required|email|min:3')]
     public string $email;
-    #[Validate('required|min:3')]
     public string $password;
     #[Title('Login')]
     #[Layout('components.layouts.app')]
