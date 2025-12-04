@@ -29,7 +29,7 @@
                 </svg>
             </div>
             <ul tabindex="0" class="dropdown-content menu menu-sm bg-base-100 rounded-box w-40 shadow">
-                <li><a href="{{ route('prize-draw.create') }}">Gerenciar sorteios</a></li>
+                <li><a href="{{ route('prize-draw.management') }}">Gerenciar sorteios</a></li>
                 <li class="text-error"><a href="">Sair</a></li>
             </ul>
         </div>

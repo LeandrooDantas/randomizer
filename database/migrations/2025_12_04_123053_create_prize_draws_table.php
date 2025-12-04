@@ -15,14 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->integer('quantity_participants')->unsigned();
-            $table->string('winner', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('winner')
-                ->references('registration_number')
-                ->on('users_prize_draws')
-                ->onDelete('restrict');
         });
     }
 

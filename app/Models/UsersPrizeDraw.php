@@ -15,13 +15,15 @@ class UsersPrizeDraw extends Model
     use SoftDeletes;
     protected $fillable = [
         'user_id',
+        'name',
+        'prize_draw_id',
         'registration_number',
         'section',
         'branch',
     ];
 
-    public function winner(): belongsTo
+    public function prizeDraw(): belongsTo
     {
-        return $this->belongsTo(PrizeDraw::class, 'user_id', 'winner');
+        return $this->belongsTo(PrizeDraw::class, 'prize_draw_id');
     }
 }

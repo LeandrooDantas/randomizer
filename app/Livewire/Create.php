@@ -15,4 +15,5 @@ class Create extends Component
     {
         return view('livewire.create');
     }
+
 }

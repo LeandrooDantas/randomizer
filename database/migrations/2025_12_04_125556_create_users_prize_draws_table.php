@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('registration_number', 8)->unique();
             $table->string('section', 100);
             $table->string('branch', 100);
+            $table->foreignId('prize_draw_id')->constrained('prize_draws')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

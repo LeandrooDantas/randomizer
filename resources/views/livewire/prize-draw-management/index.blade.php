@@ -1,0 +1,42 @@
+<div>
+    <div class="border border-base-300 rounded bg-white max-w-[1700px] mx-auto mt-10 p-6 shadow-lg">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nome do sorteio</th>
+                <th>Quantidade de participantes</th>
+                <th>Ganhador</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ $raffleName }}</td>
+                <td>{{ count($participants) }}</td>
+                <td>
+                    @if($winner)
+                        {{ $winner }}
+                    @else
+                        <span class="text-gray-500 italic">Ainda não sorteado</span>
+                    @endif
+                </td>
+                <td class="text-right">
+                    <a  href="{{ route('prize-draw.index') }}" class="button btn btn-primary btn-sm" @if($winner) disabled @endif>
+                        Sortear ganhador
+                    </a>
+                    <button class="btn btn-outline btn-sm" wire:click="resetDraw">
+                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path>
+                        </svg>Resetar ganhador
+                    </button>
+                    <button class="btn btn-outline btn-error btn-sm" wire:click="deleteDraw">
+                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

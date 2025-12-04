@@ -17,11 +17,15 @@ class PrizeDraw extends Model
     protected $fillable = [
         'name',
         'quantity_participants',
-        'winner',
     ];
 
     public function participants(): HasMany
     {
-        return $this->hasMany(UsersPrizeDraw::class, 'user_id', 'id');
+        return $this->hasMany(UsersPrizeDraw::class, 'prize_draw_id');
+    }
+
+    public function winners(): HasMany
+    {
+        return $this->hasMany(PrizeDrawWinner::class, 'prize_draw_id');
     }
 }
