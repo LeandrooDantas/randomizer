@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 255);
             $table->integer('quantity_participants')->unsigned();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('branch', 100);
             $table->foreignId('prize_draw_id')->constrained('prize_draws')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
