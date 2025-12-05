@@ -4,6 +4,7 @@ namespace App\Livewire\PrizeDrawManagement;
 
 use App\Models\PrizeDraw;
 use App\Models\PrizeDrawWinner;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Title;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -12,7 +13,7 @@ use Livewire\Component;
 class Index extends Component
 {
     public $raffleName = [];
-    public $raffle_id;
+    public $selectedRaffle;
     public $participants = [];
     public $winner = [];
     #[Title('Gerenciar Sorteios')]
@@ -24,6 +25,8 @@ class Index extends Component
 
     public function mount()
     {
+//        $this->selectedRaffle = new Collection();
+
         $raffle = PrizeDraw::all();
 
         if (!$raffle) {
@@ -34,8 +37,6 @@ class Index extends Component
         }
 
         $this->raffleName = PrizeDraw::with(['participants', 'winners.userPrizeDraw'])->orderBy('created_at', 'desc')->get();
-
-        $this->winner = PrizeDrawWinner::find($this->raffle_id)?->winners()->with('userPrizeDraw')->get() ?? [];
     }
 
     public function resetWinner($winnerId)
@@ -49,16 +50,10 @@ class Index extends Component
         $this->winner = $raffle->winners()->with('userPrizeDraw')->get();
     }
 
-    public function delete(int $id)
+    public function openResetModal(PrizeDraw $prizeDraw)
     {
-        $prizeDraw = PrizeDraw::findOrFail($id);
-        $prizeDraw->delete();
-
-        session()->flash('toast', [
-            'type' => 'success',
-            'message' => 'Sorteio deletado com sucesso.',
-        ]);
-
-       return redirect()->route('prize-draw-management.index');
+        $this->selectedRaffle = $prizeDraw;
+        $this->js('my_modal_5.showModal()');
     }
+
 }

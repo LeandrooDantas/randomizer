@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use AllowDynamicProperties;
 use App\Models\PrizeDraw;
 use App\Models\PrizeDrawWinner;
+use App\Models\UsersPrizeDraw;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -36,6 +38,12 @@ class PrizeDrawIndex extends Component
 
     public function drawWinner()
     {
+        $this->dispatch('draw-start');
+
+        $this->rollingNames = UsersPrizeDraw::inRandomOrder()->limit(15)->pluck('name')->toArray();
+
+        usleep(2000000);
+
         if (!$this->raffle) {
             return;
         }
@@ -52,6 +60,7 @@ class PrizeDrawIndex extends Component
         ]);
 
         $this->winners = $this->raffle->fresh()->winners()->with('userPrizeDraw')->get();
+        $this->dispatch('draw-end');
     }
 
     public function render(): View

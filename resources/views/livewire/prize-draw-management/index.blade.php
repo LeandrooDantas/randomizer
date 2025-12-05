@@ -1,22 +1,24 @@
 <div>
-    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle" wire:ignore.self>
         <div class="modal-box">
             <h3 class="text-lg font-bold">Resetar ganhador</h3>
-            @foreach($winner as $w)
-                <div class="flex items-center gap-4 mt-3 border-b pb-2">
-                    <div>
-                        <span class="font-semibold block">{{ $w->userPrizeDraw->name }}</span>
-                        <span class="text-sm text-gray-500">Matrícula: {{ $w->userPrizeDraw->registration_number }}</span>
-                    </div>
+            @if($selectedRaffle)
+                @foreach($selectedRaffle->winners as $winner)
+                    <div class="flex items-center gap-4 mt-3 border-b pb-2">
+                        <div>
+                            <span class="font-semibold block">{{ $winner->userPrizeDraw->name }}</span>
+                            <span class="text-sm text-gray-500">Matrícula: {{ $winner->userPrizeDraw->registration_number }}</span>
+                        </div>
 
-                    <button class="btn btn-sm btn-outline ml-auto" wire:click="resetWinner({{ $w->id }})">
+                    <button class="btn btn-sm btn-outline ml-auto" wire:click="resetWinner({{ $winner->id }})">
                         <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path>
                         </svg>
                         Resetar ganhador
                     </button>
-                </div>
-            @endforeach
+                    </div>
+                @endforeach
+            @endif
         </div>
         <form method="dialog" class="modal-backdrop">
             <button>close</button>
@@ -68,16 +70,11 @@
                             </svg>
                             Sortear ganhador
                         </a>
-                        <button class="btn btn-outline btn-sm" onclick="my_modal_5.showModal()">
+                        <button class="btn btn-outline btn-sm" wire:click="openResetModal({{ $raffle->id }})">
                             <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path>
                             </svg>
                             Resetar ganhador
-                        </button>
-                        <button class="btn btn-outline btn-error btn-sm" wire:click="delete({{ $raffle->id }})" wire:confirm="Tem certeza que deseja excluir este sorteio?">
-                            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
-                            </svg>
                         </button>
                     </td>
                 </tr>
