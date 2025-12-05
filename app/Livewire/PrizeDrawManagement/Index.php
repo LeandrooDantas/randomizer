@@ -11,7 +11,8 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public string $raffleName;
+    public $raffleName = [];
+    public $raffle_id;
     public $participants = [];
     public $winner = [];
     #[Title('Gerenciar Sorteios')]
@@ -23,18 +24,18 @@ class Index extends Component
 
     public function mount()
     {
-        $raffle = PrizeDraw::latest()->first();
+        $raffle = PrizeDraw::all();
 
         if (!$raffle) {
-            $this->raffleName = '';
+            $this->raffleName = [];
             $this->participants = [];
             $this->winner = [];
             return;
         }
 
-        $this->raffleName = $raffle->name;
-        $this->participants = $raffle->participants;
-        $this->winner = $raffle->winners;
+        $this->raffleName = PrizeDraw::with(['participants', 'winners.userPrizeDraw'])->orderBy('created_at', 'desc')->get();
+
+        $this->winner = PrizeDrawWinner::find($this->raffle_id)?->winners()->with('userPrizeDraw')->get() ?? [];
     }
 
     public function resetWinner($winnerId)
@@ -48,18 +49,16 @@ class Index extends Component
         $this->winner = $raffle->winners()->with('userPrizeDraw')->get();
     }
 
-    public function deleteDraw()
+    public function delete(int $id)
     {
-        $raffle = PrizeDraw::latest()->first();
+        $prizeDraw = PrizeDraw::findOrFail($id);
+        $prizeDraw->delete();
 
-        if ($raffle) {
-            $raffle->participants()->delete();
-            $raffle->winners()->delete();
-            $raffle->delete();
-        }
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Sorteio deletado com sucesso.',
+        ]);
 
-        $this->raffleName = '';
-        $this->participants = [];
-        $this->winner = [];
+       return redirect()->route('prize-draw-management.index');
     }
 }
