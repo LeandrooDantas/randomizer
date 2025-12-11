@@ -3,7 +3,6 @@
 namespace App\Livewire\PrizeDrawManagement;
 
 use App\Models\PrizeDraw;
-use App\Models\PrizeDrawUser;
 use App\Models\UsersPrizeDraw;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
