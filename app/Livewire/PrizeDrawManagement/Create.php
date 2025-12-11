@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PrizeDrawManagement;
 
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -13,7 +13,7 @@ class Create extends Component
     #[Layout('components.layouts.app')]
     public function render(): View
     {
-        return view('livewire.create');
+        return view('livewire.prize-draw-management.create');
     }
 
 }

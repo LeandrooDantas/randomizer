@@ -1,8 +1,8 @@
 <?php
 
-use App\Livewire\Create;
-use App\Livewire\PrizeDrawIndex;
 use App\Livewire\Login;
+use App\Livewire\PrizeDrawIndex;
+use App\Livewire\PrizeDrawManagement\Create;
 use App\Livewire\PrizeDrawManagement\Index;
 use Illuminate\Support\Facades\Route;
 
