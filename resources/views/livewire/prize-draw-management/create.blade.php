@@ -17,9 +17,8 @@
                         <span>Participantes</span>
                     </label>
                     <input wire:model="quantity_participants" id="quantity_participants" type="number" min="1" placeholder="Quantidade de participantes" class="input input-bordered w-full"/>
-                    <label for="file" class="label">Arquivo com Nome|Matrícula|Setor|Filial dos participantes</label>
-                    <input type="file" wire:model="file" accept=".xls, .xlsx, .csv" class="file-input file-input-bordered w-full"
-                    />
+                    <label for="file" class="label">Arquivo (.csv) com Nome-Matrícula-Setor-Filial dos participantes</label>
+                    <input type="file" wire:model="file" accept=".csv" class="file-input file-input-bordered w-full"/>
                 </div>
                 <div class="flex justify-end">
                     <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary mt-4">
