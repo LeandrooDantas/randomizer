@@ -75,6 +75,6 @@ class Create extends Component
         Storage::delete($path);
 
         session()->flash('success', 'Sorteio criado com sucesso!');
-        redirect()->route('prize-draw-management.index');
+        $this->redirectRoute('prize-draw.index');
     }
 }
