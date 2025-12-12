@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users_prize_draws', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->string('registration_number', 8)->unique();
+            $table->string('registration_number', 8);
             $table->string('section', 100);
             $table->string('branch', 100);
             $table->foreignId('prize_draw_id')->constrained('prize_draws')->cascadeOnDelete();

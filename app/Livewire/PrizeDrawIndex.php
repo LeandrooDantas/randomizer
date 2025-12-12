@@ -2,21 +2,20 @@
 
 namespace App\Livewire;
 
-use AllowDynamicProperties;
 use App\Models\PrizeDraw;
 use App\Models\PrizeDrawWinner;
 use App\Models\UsersPrizeDraw;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Illuminate\View\View;
 
 class PrizeDrawIndex extends Component
 {
     public $prizeDraws = [];
     public $selectedPrizeDraw = '';
-    public $winners = [];
     public $raffle = null;
+    public $currentWinner = null;
+    public $winners = [];
 
     #[Title('Sorteio')]
     #[Layout('components.layouts.app')]
@@ -29,41 +28,44 @@ class PrizeDrawIndex extends Component
     {
         if (!$this->selectedPrizeDraw) {
             $this->raffle = null;
+            $this->winners = [];
+            $this->currentWinner = null;
             return;
         }
-
-        $this->raffle = PrizeDraw::with(['participants'])
+        $this->raffle = PrizeDraw::with(['participants', 'winners.userPrizeDraw'])
             ->find($this->selectedPrizeDraw);
+
+        $this->winners = $this->raffle->winners;
+        $this->currentWinner = null;
     }
 
     public function drawWinner()
     {
-        $this->dispatch('draw-start');
-
-        $this->rollingNames = UsersPrizeDraw::inRandomOrder()->limit(15)->pluck('name')->toArray();
-
-        usleep(2000000);
-
         if (!$this->raffle) {
             return;
         }
-
         $alreadyWinners = $this->raffle->winners->pluck('user_prize_draw_id');
 
-        $eligible = $this->raffle->participants()->whereNotIn('id', $alreadyWinners)->get();
+        $eligible = $this->raffle->participants()
+            ->whereNotIn('id', $alreadyWinners)
+            ->get();
+
+        if ($eligible->isEmpty()) {
+            return;
+        }
 
         $picked = $eligible->random();
 
-        PrizeDrawWinner::create([
+        $winner = PrizeDrawWinner::create([
             'prize_draw_id'      => $this->raffle->id,
             'user_prize_draw_id' => $picked->id,
         ]);
 
+        $this->currentWinner = $winner->load('userPrizeDraw');
         $this->winners = $this->raffle->fresh()->winners()->with('userPrizeDraw')->get();
-        $this->dispatch('draw-end');
     }
 
-    public function render(): View
+    public function render()
     {
         return view('livewire.prize-draw-index');
     }
