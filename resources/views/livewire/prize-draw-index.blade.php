@@ -17,17 +17,43 @@
             </div>
         </div>
     </div>
-    @if($currentWinner)
-        <div class="flex flex-col items-center mt-12">
-            <h1 class="text-8xl font-extrabold text-white mb-6 leading-tight text-uppercase">
-                {{ strtoupper($currentWinner->userPrizeDraw->name) }}
+    <div class="flex flex-col items-center mt-12">
+        @if($isDrawing)
+            <h1 class="text-7xl font-extrabold text-white mb-6 leading-tight text-uppercase"
+                id="rolling-display"
+                wire:key="rolling-name">
+                {{ $rollingName }}
+            </h1>
+            <p class="text-4xl text-white font-semibold">SORTEANDO...</p>
+        @elseif($currentWinner)
+            <h1 class="text-7xl font-extrabold text-white mb-6 leading-tight text-uppercase">
+                {{ mb_strtoupper($currentWinner->userPrizeDraw->name) }}
             </h1>
             <p class="text-4xl text-white font-semibold">
-                Matrícula - {{ strtoupper($currentWinner->userPrizeDraw->registration_number) }}
+                MATRÍCULA - {{ mb_strtoupper($currentWinner->userPrizeDraw->registration_number) }}
             </p>
             <p class="text-4xl text-white font-semibold">
-                {{ strtoupper($currentWinner->userPrizeDraw->section) }} - {{ strtoupper($currentWinner->userPrizeDraw->branch) }}
+                {{ mb_strtoupper($currentWinner->userPrizeDraw->section) }} - {{ strtoupper($currentWinner->userPrizeDraw->branch) }}
             </p>
-        </div>
-    @endif
+        @endif
+    </div>
 </div>
+<script>
+    let rollInterval;
+    const rollingDuration = 6000;
+    const updateFrequency = 100;
+
+    function startRaffleAnimation() {
+        const component = Livewire.find('{{ $this->getId() }}');
+
+        rollInterval = setInterval(() => {
+            component.call('updateRollingName');
+        }, updateFrequency);
+
+        setTimeout(() => {
+            clearInterval(rollInterval); // Para a rolagem
+            component.set('rollingName', 'PROCESSANDO O RESULTADO...');
+            component.call('finalizeDraw');
+        }, rollingDuration);
+    }
+</script>
